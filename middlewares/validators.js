@@ -31,7 +31,6 @@ const createUserValidation = (req, _res, next) => {
 
 const loginValidation = (req, _res, next) => {
   const { email, password } = req.body;
-
   const schema = JOI.object({
     email: JOI.string().email().required(),
     password: JOI.string().required().min(6).messages({
@@ -45,8 +44,22 @@ const loginValidation = (req, _res, next) => {
   next();
 };
 
+const createCategoryValidation = (req, _res, next) => {
+  console.log('createCategoryValidation');
+  const { name } = req.body;
+  const schema = JOI.object({
+    name: JOI.string().required(),
+  });
+  
+  const { error } = schema.validate({ name });
+
+  if (error) throw error;
+  next();
+};
+
 module.exports = {
   // idValidation,
   createUserValidation,
   loginValidation,
+  createCategoryValidation,
 };

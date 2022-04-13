@@ -11,12 +11,12 @@ const Attributes = {
 };
 
 module.exports = (sequelize) => {
-  const Categories = sequelize.define('Categories', Attributes,
+  const Category = sequelize.define('Category', Attributes,
   {
     // underscored: true, 
     timestamps: false,
     tableName: 'Categories',
   });
 
-  return Categories;
+  return Category;
 };

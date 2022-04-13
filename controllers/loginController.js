@@ -1,8 +1,8 @@
 const jwtGenerator = require('../helpers/jwtGenerator');
 const { User } = require('../models');
 
-const createLoginController = async (req, res) => {
-        console.log('createLoginController');
+const createLogin = async (req, res) => {
+        console.log('createLogin');
 
     try {
         const { email, password } = req.body;
@@ -26,5 +26,5 @@ const createLoginController = async (req, res) => {
 };
 
 module.exports = {
-    createLoginController,
+    createLogin,
 };
