@@ -29,22 +29,24 @@ const createUserValidation = (req, _res, next) => {
   next();
 };
 
-/* const createLoginValidation = (req, _res, next) => {
+const loginValidation = (req, _res, next) => {
   const { email, password } = req.body;
-  const { error } = JOI.object({
+
+  const schema = JOI.object({
     email: JOI.string().email().required(),
     password: JOI.string().required().min(6).messages({
       'string.min': '"password" length must be 6 characters long',
-    })
-  .validate({ email, password }),
+    }),
   });
+  
+  const { error } = schema.validate({ email, password });
 
   if (error) throw error;
   next();
-}; */
+};
 
 module.exports = {
   // idValidation,
   createUserValidation,
-  // createLoginValidation,
+  loginValidation,
 };
