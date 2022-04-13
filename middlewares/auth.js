@@ -2,14 +2,16 @@ const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
     try {
-    const token = req.header.authorization;
+        const token = req.headers.authorization;
+        console.log({ token });
     
-    if (!token) return res.status(401).json({ error: 'Token not found' });
+        if (!token) return res.status(401).json({ message: 'Token not found' });
     /* const error = new Error('Token not found');  
     error.statusCode = 401;
     return next(error); */
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log({ decoded });
     
     req.tokenData = decoded.data;
 

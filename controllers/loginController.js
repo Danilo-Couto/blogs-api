@@ -1,11 +1,13 @@
 const jwtGenerator = require('../helpers/jwtGenerator');
-const { Users } = require('../models');
+const { User } = require('../models');
 
 const createLoginController = async (req, res) => {
+        console.log('createLoginController');
+
     try {
         const { email, password } = req.body;
 
-        const existingUser = await Users.findOne({ where: { email } });
+        const existingUser = await User.findOne({ where: { email } });
         
         if (!existingUser) return res.status(400).json({ message: 'Invalid fields' });
 

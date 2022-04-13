@@ -21,18 +21,18 @@ const Attributes = {
 };
 
 module.exports = (sequelize) => {
-  const Users = sequelize.define('Users', Attributes,
+  const User = sequelize.define('User', Attributes,
   {
     underscored: false, // converte as colunas camelCase para snake_case; 'substitui' o field
     timestamps: false,
     tableName: 'Users',
   });
 
-  Users.associate = (models) => {
-    Users.hasMany(models.BlogPosts, { 
+  User.associate = (models) => {
+    User.hasMany(models.BlogPosts, { 
       foreignKey: 'userId', as: 'blogPosts',
     });
   };
 
-  return Users;
+  return User;
 };
