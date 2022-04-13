@@ -3,6 +3,7 @@ const { DataTypes } = require('sequelize');
 const Attributes = {
   id: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
   },
   displayName: {
     type: DataTypes.STRING,
@@ -22,7 +23,7 @@ const Attributes = {
 module.exports = (sequelize) => {
   const Users = sequelize.define('Users', Attributes,
   {
-    underscored: true, // converte as colunas camelCase para snake_case; 'substitui' o field
+    underscored: false, // converte as colunas camelCase para snake_case; 'substitui' o field
     timestamps: false,
     tableName: 'Users',
   });
