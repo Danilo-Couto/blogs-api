@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const errorHandler = require('./middlewares/errorHandler');
 const userRoute = require('./routers/userRoute');
-const loginRoute = require('./routers/loginRoute');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,7 +13,6 @@ app.get('/', (request, response) => {
 });
 
 app.use('/user', userRoute);
-app.use('/login', loginRoute);
 
 app.get('/healthcheck', (_req, res) => res.send('OK'));
 

@@ -29,8 +29,7 @@ const createUserValidation = (req, _res, next) => {
   next();
 };
 
-const createLoginValidation = (req, _res, next) => {
-  console.log('first');
+/* const createLoginValidation = (req, _res, next) => {
   const { email, password } = req.body;
   const { error } = JOI.object({
     email: JOI.string().email().required(),
@@ -42,10 +41,10 @@ const createLoginValidation = (req, _res, next) => {
 
   if (error) throw error;
   next();
-};
+}; */
 
 module.exports = {
   // idValidation,
   createUserValidation,
-  createLoginValidation,
+  // createLoginValidation,
 };
