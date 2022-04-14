@@ -12,7 +12,6 @@ const idValidation = (req, _res, next) => {
   next();
 }; */
 
-// validar createUSER
 const scheme = JOI.object({
   displayName: JOI.string().min(8).not().empty(),
   email: JOI.string().email().required(),
@@ -37,15 +36,12 @@ const loginValidation = (req, _res, next) => {
       'string.min': '"password" length must be 6 characters long',
     }),
   });
-  
   const { error } = schema.validate({ email, password });
-
   if (error) throw error;
   next();
 };
 
 const createCategoryValidation = (req, _res, next) => {
-  console.log('createCategoryValidation');
   const { name } = req.body;
   const schema = JOI.object({
     name: JOI.string().required(),
@@ -57,9 +53,24 @@ const createCategoryValidation = (req, _res, next) => {
   next();
 };
 
+const createPostValidation = (req, _res, next) => {
+  const { title, content, categoryIds } = req.body;
+  const schema = JOI.object({
+    title: JOI.string().required(),
+    content: JOI.string().required(),
+    categoryIds: JOI.array().required().items(JOI.number().integer()),
+  });
+  
+  const { error } = schema.validate({ title, content, categoryIds });
+
+  if (error) throw error;
+  next();
+};
+
 module.exports = {
   // idValidation,
   createUserValidation,
   loginValidation,
   createCategoryValidation,
+  createPostValidation,
 };

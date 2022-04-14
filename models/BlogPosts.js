@@ -4,6 +4,7 @@ const Attributes = {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
   },
   title: {
     type: DataTypes.STRING,
@@ -27,8 +28,10 @@ const Attributes = {
 module.exports = (sequelize) => {
   const BlogPosts = sequelize.define('BlogPosts', Attributes,
   {
-    underscored: true, 
-    timestamps: false,
+    // underscored: false, 
+    // timeStamps: false,
+    createdAt: 'published',
+    updatedAt: 'updated',
     tableName: 'BlogPosts',
   });
 
