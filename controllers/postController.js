@@ -1,5 +1,5 @@
 const { BlogPosts, sequelize } = require('../models');
-const { PostsCategories } = require('../models');
+const { PostsCategories, User, Category } = require('../models');
 
 const createPost = async (req, res, next) => {
     try {
@@ -31,8 +31,14 @@ const createPost = async (req, res, next) => {
 
 const getAllPosts = async (req, res, next) => {
     try {
-        const CategoryList = await BlogPosts.findAll();
-        return res.status(200).json(CategoryList);
+        const posts = await BlogPosts.findAll({
+         include: [
+         { model: User, as: 'user', attributes: { exclude: ['password'] } },
+         { model: Category, as: 'categories', through: { attributes: [] } },
+        ], 
+        });
+
+        return res.status(200).json(posts);
     } catch (error) {
         next(error);      
     }
