@@ -1,16 +1,15 @@
 const JOI = require('joi');
 
 // validar ID
-/* const idValidate = JOI.object({
-  id: JOI.number().integer().required(),
-});
-
 const idValidation = (req, _res, next) => {
   const id = req.params;
-  const { error } = idValidate.validate(id);
+  const { error } = JOI.object({
+    id: JOI.number().integer().required(),
+  }).validate(id);
+  
   if (error) throw error;
   next();
-}; */
+};
 
 const scheme = JOI.object({
   displayName: JOI.string().min(8).not().empty(),
@@ -68,7 +67,7 @@ const createPostValidation = (req, _res, next) => {
 };
 
 module.exports = {
-  // idValidation,
+  idValidation,
   createUserValidation,
   loginValidation,
   createCategoryValidation,
