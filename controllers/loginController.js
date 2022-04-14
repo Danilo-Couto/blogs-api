@@ -1,7 +1,7 @@
 const jwtGenerator = require('../helpers/jwtGenerator');
 const { User } = require('../models');
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -15,10 +15,13 @@ const login = async (req, res) => {
 
         res.status(200).json({ token });
         } catch (error) {
-        console.log(error);
-        res
+        /* res
         .status(500)
-        .json({ message: 'Erro ao logar', error: error.message });
+        .json({ message: 'Erro ao logar', error: error.message }); */
+
+        error.message = 'Erro ao logar';
+        error.statusCode = 500;
+        next(error); 
     }
 };
 

@@ -1,7 +1,7 @@
 const jwtGenerator = require('../helpers/jwtGenerator');
 const { User } = require('../models');
 
-const createUserController = async (req, res) => {
+const createUserController = async (req, res, next) => {
     try {
         const { displayName, email, password, image } = req.body;
 
@@ -20,13 +20,14 @@ const createUserController = async (req, res) => {
 
         res.status(201).json({ token });
     } catch (error) {
+        /*
         res
         .status(500)
         .json({ message: 'Erro ao salvar o usuário no banco', error: error.message });
-        /*
-        const err = new Error('Erro ao salvar o usuário no banco');
-        err.statusCode = 500;    
-        return next(err); */
+        */
+        error.message = 'Erro ao salvar o usuário no banco';
+        error.statusCode = 500;    
+        next(error); 
     }
 };
 
