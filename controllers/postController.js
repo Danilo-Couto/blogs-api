@@ -85,9 +85,22 @@ const editPost = async (req, res, next) => {
     } 
 };
 
+const deletePost = async (req, res, next) => {
+    try {
+        const id = req.params;
+  
+        await BlogPosts.destroy({ where: id });
+      
+        return res.status(204).end();
+    } catch (error) {
+        next(error);      
+    }
+  };
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     editPost,
+    deletePost,
 };
