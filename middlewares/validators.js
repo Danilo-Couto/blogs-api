@@ -53,6 +53,13 @@ const createCategoryValidation = (req, _res, next) => {
 };
 
 const createPostValidation = (req, _res, next) => {
+  /*
+  const categoriesId = (await Category.findAll()).map((cat) => cat.id);
+  const existCategory = await categoryIds
+      .every((categoryId) => categoriesId.includes(categoryId));
+  if (!existCategory) return res.status(400).json({ message: '"categoryIds" not found' });  
+  */
+
   const { title, content, categoryIds } = req.body;
   const schema = JOI.object({
     title: JOI.string().required(),
@@ -67,34 +74,37 @@ const createPostValidation = (req, _res, next) => {
 };
 
 const authAuthor = async (req, res, next) => {
-  const { id } = req.tokenData;
-  const postId = req.params;
-
-  const post = await BlogPosts.findOne({ where: postId });
-  if (!post) return res.status(404).json({ message: 'Post does not exist' });
-
-  if (id !== post.userId) return res.status(401).json({ message: 'Unauthorized user' });
-
-  await next();
+  try {
+    const { id } = req.tokenData;
+    const postId = req.params;
+    
+    const { userId } = await BlogPosts.findOne({ where: postId });
+    if (id !== userId) return res.status(401).json({ message: 'Unauthorized user' });
+    next();
+    } catch (error) {
+      error.message = 'Post does not exist';
+      error.statusCode = 404;
+      next(error);   
+    }      
   };
 
-const editPostValidation = (req, res, next) => {
-  const { title, content } = req.body;
+  const editPostValidation = (req, res, next) => {
+    const { title, content } = req.body;
   
-  if (Object.keys(req.body).includes('categoryIds')) {
-    return next({
-      code: 500,
-      message: 'Categories cannot be edited',
+    if (Object.keys(req.body).includes('categoryIds')) {
+      const error = new Error('Categories cannot be edited');  
+        error.statusCode = 400;
+        return next(error);
+      }
+  
+    const schema = JOI.object({
+      title: JOI.string().required(),
+      content: JOI.string().required(),
     });
-  }
-  const schema = JOI.object({
-    title: JOI.string().required(),
-    content: JOI.string().required(),
-  });
-  const { error } = schema.validate({ title, content });
-  if (error) throw error;
-  next();
-};
+    const { error } = schema.validate({ title, content });
+    if (error) throw error;
+    next();
+  };
 
 module.exports = {
   idValidation,
