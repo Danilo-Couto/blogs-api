@@ -13,7 +13,6 @@ const Attributes = {
 module.exports = (sequelize) => {
   const Category = sequelize.define('Category', Attributes,
   {
-    // underscored: true, 
     timestamps: false,
     tableName: 'Categories',
   });

@@ -1,4 +1,5 @@
 const JOI = require('joi');
+const { BlogPosts } = require('../models');
 
 // validar ID
 const idValidation = (req, _res, next) => {
@@ -6,7 +7,7 @@ const idValidation = (req, _res, next) => {
   const { error } = JOI.object({
     id: JOI.number().integer().required(),
   }).validate(id);
-  
+
   if (error) throw error;
   next();
 };
@@ -66,10 +67,40 @@ const createPostValidation = (req, _res, next) => {
   next();
 };
 
+const authAuthor = async (req, res, next) => {
+  const { id } = req.tokenData;
+  const postId = req.params;
+
+  const { userId } = await BlogPosts.findOne({ where: postId });
+  if (id !== userId) return res.status(401).json({ message: 'Unauthorized user' });
+
+  next();
+  };
+
+const editPostValidation = (req, res, next) => {
+  const { title, content } = req.body;
+  
+  if (Object.keys(req.body).includes('categoryIds')) {
+    const error = new Error('Categories cannot be edited');  
+      error.statusCode = 400;
+      return next(error);
+    }
+  
+  const schema = JOI.object({
+    title: JOI.string().required(),
+    content: JOI.string().required(),
+  });
+  const { error } = schema.validate({ title, content });
+  if (error) throw error;
+  next();
+};
+
 module.exports = {
   idValidation,
   createUserValidation,
   loginValidation,
   createCategoryValidation,
   createPostValidation,
+  editPostValidation,
+  authAuthor,
 };

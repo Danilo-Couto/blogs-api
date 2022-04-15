@@ -20,11 +20,6 @@ const createUserController = async (req, res, next) => {
 
         res.status(201).json({ token });
     } catch (error) {
-        /*
-        res
-        .status(500)
-        .json({ message: 'Erro ao salvar o usuário no banco', error: error.message });
-        */
         error.message = 'Erro ao salvar o usuário no banco';
         error.statusCode = 500;    
         next(error); 

@@ -47,7 +47,6 @@ const getAllPosts = async (req, res, next) => {
 const getPostById = async (req, res, next) => {
     const id = req.params;
     try {
-
         const post = await BlogPosts.findOne({ where: id,
          include: [
          { model: User, as: 'user', attributes: { exclude: ['password'] } },
@@ -65,8 +64,30 @@ const getPostById = async (req, res, next) => {
     }
 };
 
+const editPost = async (req, res, next) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    
+    try {
+        const post = await BlogPosts.findByPk(id);
+        post.title = title; 
+        post.content = content;
+        await post.save();    
+
+        const editedPost = await BlogPosts.findOne({
+          where: { id },
+            attributes: ['title', 'content', 'userId'],
+          include: [{ model: Category, as: 'categories', through: { attributes: [] } },
+            ] });
+        return res.status(200).json(editedPost);
+    } catch (error) {
+          next(error);      
+    } 
+};
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
+    editPost,
 };
