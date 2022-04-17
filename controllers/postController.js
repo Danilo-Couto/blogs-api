@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPosts, sequelize } = require('../models');
 const { PostsCategories, User, Category } = require('../models');
 
@@ -88,10 +89,33 @@ const deletePost = async (req, res, next) => {
     }
 };
 
+const getSearchedPost = async (req, res, next) => {
+    // https://sequelize.org/docs/v6/core-concepts/model-querying-basics/#operators
+    try {
+        const { q } = req.query; 
+        const postAll = await BlogPosts.findAll({
+          include: 
+            [{ model: User, as: 'user', attributes: { exclude: 'password' } },
+            { model: Category, as: 'categories', through: { attributes: [] } }],
+        });
+        if (q.length === 0) return res.status(200).json(postAll);
+        const post = await BlogPosts.findAll({
+          where: { [Op.or]: [{ title: q }, { content: q }] },
+          include: 
+            [{ model: User, as: 'user', attributes: { exclude: 'password' } },
+            { model: Category, as: 'categories', through: { attributes: [] } }],
+        });
+        return res.status(200).json(post);
+      } catch (error) {
+        next(error);
+      }
+    };
+
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     editPost,
     deletePost,
+    getSearchedPost,
 };
