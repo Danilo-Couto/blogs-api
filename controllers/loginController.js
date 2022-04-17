@@ -15,8 +15,6 @@ const login = async (req, res, next) => {
 
         res.status(200).json({ token });
         } catch (error) {
-        /* error.message = 'Erro ao logar';
-        error.statusCode = 500; */
         next(error); 
     }
 };

@@ -43,8 +43,20 @@ const getUser = async (req, res, next) => {
     }
 };
 
+const deleteUser = async (req, res, next) => {
+    try {
+        const id = req.tokenData;
+        await User.destroy({ where: id });
+      
+        return res.status(204).end();
+    } catch (error) {
+        next(error);      
+    }
+  };
+
 module.exports = {
     createUserController,
     getAllUsers,
     getUser,
+    deleteUser,
 };
