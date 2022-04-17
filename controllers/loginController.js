@@ -15,12 +15,8 @@ const login = async (req, res, next) => {
 
         res.status(200).json({ token });
         } catch (error) {
-        /* res
-        .status(500)
-        .json({ message: 'Erro ao logar', error: error.message }); */
-
-        error.message = 'Erro ao logar';
-        error.statusCode = 500;
+        /* error.message = 'Erro ao logar';
+        error.statusCode = 500; */
         next(error); 
     }
 };

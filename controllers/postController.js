@@ -16,6 +16,10 @@ const createPost = async (req, res, next) => {
         return res.status(201).json(newPost);
         });
     } catch (error) {
+        if (error.name === 'SequelizeForeignKeyConstraintError') { 
+            error.message = '"categoryIds" not found';
+            error.statusCode = 400;
+        }
         next(error); 
     }
 };
@@ -28,7 +32,6 @@ const getAllPosts = async (req, res, next) => {
          { model: Category, as: 'categories', through: { attributes: [] } },
         ], 
         });
-
         return res.status(200).json(posts);
     } catch (error) {
         next(error);      
@@ -44,13 +47,10 @@ const getPostById = async (req, res, next) => {
          { model: Category, as: 'categories', through: { attributes: [] } },
         ], 
         });
-
-        if (post === null) throw new Error();
-
+        if (post === null) return res.status(404).json({ message: 'Post does not exist' }); 
+        
         return res.status(200).json(post);
     } catch (error) {
-        error.message = 'Post does not exist';
-        error.statusCode = 404;
         next(error);      
     }
 };
@@ -86,7 +86,7 @@ const deletePost = async (req, res, next) => {
     } catch (error) {
         next(error);      
     }
-  };
+};
 
 module.exports = {
     createPost,

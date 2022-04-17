@@ -9,35 +9,27 @@ const createUserController = async (req, res, next) => {
         
         if (alreadyExists) {         
         return res.status(409).json({ message: 'User already registered' });
-        /*
-        const error = new Error('User already registered');
-        error.statusCode = 409;    
-        return next(error); */
         }
         const newUser = await User.create({ displayName, email, password, image });
 
         const token = jwtGenerator({ id: newUser.id, displayName });
 
         res.status(201).json({ token });
-    } catch (error) {
-        error.message = 'Erro ao salvar o usuário no banco';
-        error.statusCode = 500;    
+    } catch (error) {   
         next(error); 
     }
 };
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
     try {
         const userList = await User.findAll();
         return res.status(200).json(userList);
     } catch (error) {
-        res
-        .status(500)
-        .json({ message: 'Erro ao buscar usuários no banco', error: error.message });        
+        next(error); 
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
     const { id } = req.params;
     try {
         const user = await User.findOne({ where: { id },
@@ -47,9 +39,7 @@ const getUser = async (req, res) => {
 
         return res.status(200).json(user);
     } catch (error) {
-        res
-        .status(500)
-        .json({ message: 'Erro ao buscar o usuário no banco', error: error.message });        
+        next(error); 
     }
 };
 
