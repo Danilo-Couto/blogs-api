@@ -1,18 +1,12 @@
 # Boas vindas ao repositório do API de Blogs!
 
-# Habilidades 
+Projeto Backend de desenvolvimento e teste de uma API para um Blog, além de um banco de dados. Exemplo de uso: API do Blogger. 
 
-Nesse projeto, você vai construir um back-end usando `ORM` com o pacote `sequelize` do `npm`, e será capaz de:
+Nesse projeto, fiz um back-end usando `ORM` com o pacote `sequelize` do `npm` capaz de:
  - Criar e associar tabelas usando `models` do `sequelize`
- - Construir endpoints para consumir os models que criar 
+ - Construir endpoints para consumir os models (seguindo os princípios do REST)
+ - de postagens com uma camada de autenticação de pessoas usuárias
  - Fazer um `CRUD` com o `ORM`
-
-
-## O que deverá ser desenvolvido
-
-Você vai arquiteturar e desenvolver uma API de um CRUD posts de blog (com o Sequelize). Começando pela API, você vai desenvolver alguns endpoints (seguindo os princípios do REST) que estarão conectados ao seu banco de dados.
-
-Primeiro, você irá criar uma tabela para os usuários que desejam se cadastrar na aplicação. Após isso, criará também uma tabela de Categorias para seus Posts e por fim a tabela de Posts será seu foco, guardando todas as informações dos posts realizados na plataforma. Essa é apenas uma recomendação!
 
 ---
 
