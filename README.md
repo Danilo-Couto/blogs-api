@@ -8,8 +8,6 @@ Nesse projeto, fiz um back-end usando `ORM` com o pacote `sequelize` do `npm` ca
  - de postagens com uma camada de autenticação de pessoas usuárias
  - Fazer um `CRUD` com o `ORM`
 
-![backend_code](https://github.com/Danilo-Couto/blogs-api/assets/88905222/9c11716c-e31f-4278-8a1b-47d82e8bb1ed)
-
 ---
 
 
